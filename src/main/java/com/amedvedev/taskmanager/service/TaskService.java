@@ -1,13 +1,10 @@
 package com.amedvedev.taskmanager.service;
 
-import com.amedvedev.taskmanager.task.TaskRepository;
-import org.springframework.stereotype.Service;
+import com.amedvedev.taskmanager.task.Task;
 
-@Service
-public class TaskService {
-    TaskRepository taskRepository;
+import java.util.List;
 
-    public TaskService(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+public interface TaskService {
+
+    List<Task> findAll();
 }
