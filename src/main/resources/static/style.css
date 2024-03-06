@@ -1,0 +1,7 @@
+#task-input-field {
+    display: none;
+}
+
+#task-input-field.active {
+    display: flex;
+}
