@@ -1,6 +1,7 @@
 package com.amedvedev.taskmanager.task;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,13 +19,17 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 32)
+    @Max(value = 32, message = "maximum 32 characters")
     private String name;
 
-    @Size(min = 5)
+    @Column(length = 500)
+    @Max(value = 500, message = "maximum 500 characters")
     private String description;
 
     private LocalDate dateCreated;
 
+    @Setter
     @PresentOrFutureDate
     private LocalDate dueDate;
 
@@ -33,16 +38,10 @@ public class Task {
         this.description = description;
         this.dateCreated = LocalDate.now();
         this.dueDate = dueDate;
-        System.out.println("Constructor used");
     }
 
     private void setId(Long id) {
         // dummy
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        System.out.println("Setter called");
-        this.dueDate = dueDate;
     }
 
     public void setDateCreated(String date) {

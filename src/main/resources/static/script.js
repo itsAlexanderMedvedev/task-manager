@@ -4,3 +4,4 @@ const addTaskBtn = document.getElementById("addTask"),
 addTaskBtn.addEventListener('click', function () {
     addTaskForm.classList.toggle("active")
 });
+

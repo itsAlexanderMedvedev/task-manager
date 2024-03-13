@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.time.LocalDate;
 
 @Controller
@@ -23,11 +25,11 @@ public class TaskController {
     public String tasks(Model model) {
         model.addAttribute("tasks", taskService.findAll());
         model.addAttribute("task", new Task());
-        return "tasks";
+        return "/tasks";
     }
 
     @PostMapping("/tasks/submit-task")
-    public String handleForm(@Valid @ModelAttribute Task task, BindingResult result) {
+    public String handleForm(@Valid @ModelAttribute Task task, BindingResult result, Model model) {
         System.out.println("controller entered");
         System.out.println(task.getDescription());
         if(!result.hasErrors()) {
@@ -35,8 +37,17 @@ public class TaskController {
             task.setDateCreated(LocalDate.now().toString());
             taskService.save(task);
             System.out.println(task + " saved");
+            model.addAttribute("tasks", taskService.findAll());
+            return "redirect:/tasks";
         }
+        model.addAttribute("tasks", taskService.findAll());
         return "/tasks";
+    }
+
+    @PostMapping("/tasks/delete")
+    public String deleteTask(@RequestParam Long id) {
+        taskService.delete(id);
+        return "redirect:/tasks";
     }
 
     @GetMapping("/clear")
