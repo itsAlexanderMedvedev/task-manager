@@ -23,10 +23,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="task : ${tasks}">
+                    <tr th:each="task : ${tasks}" class="task-row">
                         <td th:text="${task.id}"></td>
                         <td th:text="${task.name}"></td>
-                        <td th:text="${task.description}" class="description-column"></td>
+                        <td>
+                            <div th:text="${task.description}" class="description-column">
+
+                            </div>
+                        </td>
                         <td th:text="${task.dateCreated}"></td>
                         <td th:text="${task.dueDate}"></td>
                         <td>

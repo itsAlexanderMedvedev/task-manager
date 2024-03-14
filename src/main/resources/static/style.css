@@ -5,3 +5,8 @@
 #task-input-field.active {
     display: flex;
 }
+
+.description-column {
+    max-height: 65px;
+    overflow-y: auto;
+}
