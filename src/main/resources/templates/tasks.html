@@ -11,33 +11,33 @@
     <div class="container">
         <button class="btn btn-primary btn-sm mt-2 mb-2" id="addTask">Create Task</button>
         <div class="table-responsive">
-        <table class="table table-light align-middle">
-            <thead>
-                <tr class="my-vertical-align-center">
-                    <th scope="col" class="col-1">Id</th>
-                    <th scope="col" class="col-2">Name</th>
-                    <th scope="col" class="col-3">Description</th>
-                    <th scope="col" class="col-2">Date Created</th>
-                    <th scope="col" class="col-1">Due Date</th>
-                    <th scope="col" class="col-1"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="task : ${tasks}">
-                    <td th:text="${task.id}"></td>
-                    <td th:text="${task.name}"></td>
-                    <td th:text="${task.description}" class="description-column"></td>
-                    <td th:text="${task.dateCreated}"></td>
-                    <td th:text="${task.dueDate}"></td>
-                    <td>
-                        <form th:action="@{/tasks/delete}" method="post">
-                            <input type="hidden" name="id" th:value="${task.id}">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete Task</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="table table-light align-middle">
+                <thead>
+                    <tr class="my-vertical-align-center">
+                        <th scope="col" class="col-1">Id</th>
+                        <th scope="col" class="col-2">Name</th>
+                        <th scope="col" class="col-4">Description</th>
+                        <th scope="col" class="col-1">Created</th>
+                        <th scope="col" class="col-1">Due Date</th>
+                        <th scope="col" class="col-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="task : ${tasks}">
+                        <td th:text="${task.id}"></td>
+                        <td th:text="${task.name}"></td>
+                        <td th:text="${task.description}" class="description-column"></td>
+                        <td th:text="${task.dateCreated}"></td>
+                        <td th:text="${task.dueDate}"></td>
+                        <td>
+                            <form th:action="@{/tasks/delete}" method="post">
+                                <input type="hidden" name="id" th:value="${task.id}">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete Task</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="row justify-content-center" id="task-input-field">
             <div class="col-md-6">
@@ -52,10 +52,10 @@
                                 <input type="text" th:field="*{name}" class="form-control" id="taskName" name="taskName" required>
                                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group pt-1 pb-1">
                                 <label for="taskDescription">Task Description:</label>
-                                <textarea th:field="*{description}" class="form-control" id="taskDescription" name="taskDescription" rows="3" maxlength="500""></textarea>
-                                <span id="characterCount">0 / 100</span>
+                                <textarea th:field="*{description}" class="form-control" id="taskDescription" name="taskDescription" rows="3" maxlength="500" oninput="updateCharacterCount()"></textarea>
+                                <span id="characterCount">0 / 500</span>
                                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                             </div>
                             <div class="form-group mb-3">

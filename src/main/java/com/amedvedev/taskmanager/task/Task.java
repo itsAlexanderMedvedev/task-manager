@@ -19,12 +19,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 32)
-    @Max(value = 32, message = "maximum 32 characters")
+    @Column(length = 20)
+    @Size(max = 20, message = "maximum 20 characters")
     private String name;
 
     @Column(length = 500)
-    @Max(value = 500, message = "maximum 500 characters")
+    @Size(max = 500, message = "maximum 500 characters")
     private String description;
 
     private LocalDate dateCreated;
