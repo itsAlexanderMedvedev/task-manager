@@ -1,12 +1,54 @@
-#task-input-field {
+#taskFormDiv {
     display: none;
-}
-
-#task-input-field.active {
-    display: flex;
 }
 
 .description-column {
     max-height: 65px;
     overflow-y: auto;
+    padding-right: 2px;
+    /*line-break: anywhere;*/
+    /*overflow-x: hidden; !* Hide overflow text *!*/
+    text-overflow: ellipsis; /* Show ellipsis (...) for truncated text */
+}
+
+.controls-td {
+    display: flex;
+    /*justify-content: space-between;*/
+
+}
+
+.control-btn {
+    border: none;
+    background-color: inherit;
+    display: flex;
+}
+
+.control-btn img {
+    width: 30px;
+}
+
+.control-btn img:hover {
+    opacity: 0.7;
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-track:hover {
+    background: #ddd;
 }

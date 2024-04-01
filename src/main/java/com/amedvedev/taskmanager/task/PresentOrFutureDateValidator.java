@@ -12,7 +12,6 @@ public class PresentOrFutureDateValidator implements ConstraintValidator<Present
 
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
-        System.out.println("VALIDATION PERFORMED ON " + localDate);
         return !localDate.isBefore(LocalDate.now());
     }
 }

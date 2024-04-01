@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 @Service
 public class TaskService {
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;

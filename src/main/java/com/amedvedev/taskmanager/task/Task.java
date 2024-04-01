@@ -40,10 +40,6 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    private void setId(Long id) {
-        // dummy
-    }
-
     public void setDateCreated(String date) {
         this.dateCreated = LocalDate.parse(date);
     }
