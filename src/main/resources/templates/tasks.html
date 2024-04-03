@@ -13,20 +13,26 @@
     <div class="container">
         <button class="btn btn-primary btn-sm mt-2 mb-2" id="addTask">Create Task</button>
         <div class="table-responsive">
-            <table class="table table-light align-middle">
+            <table class="table table-light align-middle" id="taskTable">
                 <thead>
                     <tr class="my-vertical-align-center">
-                        <th scope="col" class="col-1">Id</th>
+                        <th scope="col" class="col-1">Done</th>
                         <th scope="col" class="col-2">Name</th>
                         <th scope="col" class="col-4">Description</th>
                         <th scope="col" class="col-1">Created</th>
                         <th scope="col" class="col-1">Due Date</th>
-                        <th scope="col" class="col-1"></th>
+                        <th scope="col" class="col-1">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="task : ${tasks}" class="task-row">
-                        <td th:text="${task.id}"></td>
+                    <tr th:each="task : ${tasks}" class="task-row" th:data-id="${task.id}" th:data-dateCreated="${task.dateCreated}">
+                        <td>
+                            <div>
+                                <label>
+                                    <input type="checkbox" class="task-completed-checkbox">
+                                </label>
+                            </div>
+                        </td>
                         <td th:text="${task.name}"></td>
                         <td>
                             <div th:text="${task.description}" class="description-column">
@@ -35,18 +41,21 @@
                         </td>
                         <td th:text="${task.dateCreated}"></td>
                         <td th:text="${task.dueDate}"></td>
-                        <td class="controls-td">
-                            <button class="control-btn editBtn" th:data-id="${task.id}"><img src="/edit.svg" alt="edit"></button>
-                            <form th:action="@{/tasks/delete}" method="POST">
-                                <input type="hidden" name="id" th:value="${task.id}">
-                                <button type="submit" class="control-btn"><img src="/cross.svg" alt="delete"></button>
-                            </form>
+                        <td>
+                            <div class="controls-container">
+                                <button class="control-btn editBtn" th:data-id="${task.id}">
+                                    <img src="/edit.svg" alt="edit" title="Edit">
+                                </button>
+                                <button class="control-btn deleteBtn" th:data-id="${task.id}">
+                                    <img src="/cross.svg" alt="delete" title="Delete">
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="row justify-content-center active" id="taskFormDiv">
+        <div class="row justify-content-center task-row-div" id="taskFormDiv">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -71,9 +80,8 @@
                                 <span id="characterCount">0 / 500</span>
                                 <span class="error" id="descriptionError"></span>
                             </div>
-
                             <div class="form-group mb-3">
-                                <label for="dueDate">Due Date:</label>
+                                <label for="taskDueDate">Due Date:</label>
                                 <input type="date" class="form-control" id="taskDueDate" name="dueDate" required>
                                 <span class="error" id="dueDateError"></span>
                             </div>

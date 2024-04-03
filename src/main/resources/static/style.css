@@ -1,5 +1,9 @@
-#taskFormDiv {
+.task-row-div {
     display: none;
+}
+
+.task-completed-checkbox {
+    transform: scale(1.2);
 }
 
 .description-column {
@@ -11,10 +15,9 @@
     text-overflow: ellipsis; /* Show ellipsis (...) for truncated text */
 }
 
-.controls-td {
+.controls-container {
     display: flex;
     /*justify-content: space-between;*/
-
 }
 
 .control-btn {

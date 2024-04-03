@@ -43,10 +43,17 @@ public class TaskController {
         return "/tasks";
     }
 
-    @PostMapping("/tasks/delete")
-    public String deleteTask(@RequestParam Long id) {
-        taskService.delete(id);
-        return "redirect:/tasks";
+    @DeleteMapping("/tasks/deleteTask/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
+        try {
+            taskService.delete(id);
+            return ResponseEntity.ok("Record deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    "Failed to delete record with id " + id + ": " + e.getMessage()
+            );
+        }
     }
 
     @GetMapping("/clear")
@@ -67,7 +74,7 @@ public class TaskController {
         }
 
         taskService.save(task);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @GetMapping("/tasks/editTask/{id}")
