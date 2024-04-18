@@ -19,6 +19,7 @@ $(document).ready(function() {
         descCharCount.text('0 / 500');
         $('#taskDateCreated').val(new Date().toISOString().substring(0, 10)); // Date in YYYY-MM-DD format
         $('#taskDueDate').val('');
+        $('.error').text('');
         taskFormDiv.css('display', 'flex'); // Show the form
     });
 
@@ -27,7 +28,7 @@ $(document).ready(function() {
         console.log("EDITING")
         const id = $(this).data('id');
 
-        $.get('/tasks/editTask/' + id, function(task) {
+        $.get('/tasks/' + id, function(task) {
             // Populate the form with the task data
             $('#taskId').val(task.id);
             $('#taskName').val(task.name);
@@ -36,6 +37,7 @@ $(document).ready(function() {
             $('#taskDateCreated').val(task.dateCreated);
             $('#taskDueDate').val(task.dueDate);
             taskFormDiv.css('display', 'flex'); // Show the form
+            $('.error').text('');
             isEditing = true;
         });
     });
@@ -43,7 +45,7 @@ $(document).ready(function() {
     table.on('click', '.deleteBtn', function() {
         const id = $(this).data('id');
         $.ajax({
-            url: '/tasks/deleteTask/' + id,
+            url: '/tasks/' + id,
             type: 'DELETE',
             headers: headers,
             success: function() {
@@ -62,7 +64,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: '/tasks/saveTask',
+            url: '/tasks',
             type: 'POST',
             data: JSON.stringify(formDataDict),
             headers: headers,
