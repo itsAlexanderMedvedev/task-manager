@@ -18,6 +18,7 @@ For HTTP requests that edit the database, the CSRF token is used
 * Spring web
 * Spring security
 * Spring MVC
+* Thymeleaf
 * Maven
 * HTML, CSS, Bootstrap, JavaScript
 * jQuery, AJAX
