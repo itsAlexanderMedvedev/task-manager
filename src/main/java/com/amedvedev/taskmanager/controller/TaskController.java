@@ -79,7 +79,7 @@ public class TaskController {
 
     @GetMapping("/tasks/{id}")
     @ResponseBody
-    public Task editTask(@PathVariable Long id) {
+    public Task findTaskById(@PathVariable Long id) {
         return taskService.find(id);
     }
 }
