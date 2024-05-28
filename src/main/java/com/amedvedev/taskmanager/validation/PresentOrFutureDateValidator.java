@@ -1,4 +1,4 @@
-package com.amedvedev.taskmanager.task;
+package com.amedvedev.taskmanager.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

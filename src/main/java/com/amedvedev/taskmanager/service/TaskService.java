@@ -1,6 +1,7 @@
 package com.amedvedev.taskmanager.service;
 
-import com.amedvedev.taskmanager.task.Task;
+import com.amedvedev.taskmanager.entities.Task;
+import com.amedvedev.taskmanager.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

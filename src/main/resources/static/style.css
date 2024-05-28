@@ -1,5 +1,30 @@
-.task-row-div {
+.add-task-modal-box {
     display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header p {
+    margin: 0;
+}
+
+.close-form {
+    cursor: pointer;
+    width: 30px;
 }
 
 .task-completed-checkbox {

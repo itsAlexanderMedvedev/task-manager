@@ -1,7 +1,8 @@
 $(document).ready(function() {
-    const taskFormDiv = $('#taskFormDiv');
+    const taskFormDiv = $('#taskFormDivBox');
     const descCharCount = $('#characterCount');
     const table = $('#taskTable');
+    const addTaskBtn = $('#addTask');
     let isEditing = false;
 
     // Include CSRF token in the headers (for Spring Security)
@@ -11,7 +12,7 @@ $(document).ready(function() {
     headers[csrfHeader] = csrfToken;
     headers["Content-Type"] = "application/json";
 
-    $('#addTask').click(function() {
+    $(addTaskBtn).click(function() {
         // Clear the form fields if not in edit mode
         $('#taskId').val('');
         $('#taskName').val('');
@@ -24,7 +25,6 @@ $(document).ready(function() {
 
     // done this way so that new dynamically created elements also have listeners
     table.on('click', '.editBtn', function() {
-        console.log("EDITING")
         const id = $(this).data('id');
 
         $.get('/tasks/editTask/' + id, function(task) {
@@ -109,10 +109,10 @@ $(document).ready(function() {
                 '<td>' +
                     '<div class="controls-container">' +
                         '<button class="control-btn editBtn" data-id="' + formDataDict.id + '">' +
-                            '<img src="/edit.svg" alt="edit">' +
+                            '<img src="/images/edit.svg" alt="edit">' +
                         '</button>' +
                         '<button class="control-btn deleteBtn" data-id="' + formDataDict.id + '">' +
-                            '<img src="/cross.svg" alt="delete">' +
+                            '<img src="/images/cross.svg" alt="delete">' +
                         '</button>' +
                     '</div>' +
                 '</td>');
@@ -121,4 +121,14 @@ $(document).ready(function() {
         }
     }
 
+    $('#taskFormDivCloseBtn').click(function() {
+        taskFormDiv.hide();
+        isEditing = false;
+    });
+
+    $(document).click(function(event) {
+        if (!$(event.target).closest('#taskFormDiv').length && !$(event.target).is(addTaskBtn)) {
+            taskFormDiv.hide();
+        }
+    });
 });

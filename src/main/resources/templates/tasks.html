@@ -44,10 +44,10 @@
                         <td>
                             <div class="controls-container">
                                 <button class="control-btn editBtn" th:data-id="${task.id}">
-                                    <img src="/edit.svg" alt="edit" title="Edit">
+                                    <img src="/images/edit.svg" alt="edit" title="Edit">
                                 </button>
                                 <button class="control-btn deleteBtn" th:data-id="${task.id}">
-                                    <img src="/cross.svg" alt="delete" title="Delete">
+                                    <img src="/images/cross.svg" alt="delete" title="Delete">
                                 </button>
                             </div>
                         </td>
@@ -55,11 +55,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="row justify-content-center task-row-div" id="taskFormDiv">
-            <div class="col-md-6">
+        <div class="row justify-content-center add-task-modal-box" id="taskFormDivBox">
+            <div class="col-md-6 add-task-modal" id="taskFormDiv">
                 <div class="card">
                     <div class="card-header">
-                        Task Input Form
+                        <p>Task Input Form</p>
+                        <img src="/images/cross.svg" alt="close" title="Close" class="close-form" id="taskFormDivCloseBtn">
                     </div>
                     <div class="card-body">
                         <form action="#" method="POST" id="taskForm">
@@ -94,7 +95,7 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="/script.js"></script>
-    <script src="/ajax-update.js"></script>
+    <script src="/scripts/script.js"></script>
+    <script src="/scripts/ajax-update.js"></script>
 </body>
 </html>

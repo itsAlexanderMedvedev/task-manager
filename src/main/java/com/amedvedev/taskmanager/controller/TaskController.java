@@ -1,7 +1,7 @@
 package com.amedvedev.taskmanager.controller;
 
 import com.amedvedev.taskmanager.service.TaskService;
-import com.amedvedev.taskmanager.task.Task;
+import com.amedvedev.taskmanager.entities.Task;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

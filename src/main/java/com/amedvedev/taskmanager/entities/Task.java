@@ -1,7 +1,7 @@
-package com.amedvedev.taskmanager.task;
+package com.amedvedev.taskmanager.entities;
 
+import com.amedvedev.taskmanager.validation.PresentOrFutureDate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "task")
 public class Task {
 
     @Id
@@ -29,9 +28,12 @@ public class Task {
 
     private LocalDate dateCreated;
 
-    @Setter
     @PresentOrFutureDate
     private LocalDate dueDate;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     public Task(String name, String description, LocalDate dueDate) {
         this.name = name;
