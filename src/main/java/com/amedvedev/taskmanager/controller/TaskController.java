@@ -29,21 +29,21 @@ public class TaskController {
         return "/tasks";
     }
 
-    @PostMapping("/tasks/submit-task")
-    public String handleForm(@Valid @ModelAttribute Task task, BindingResult result, Model model) {
-        System.out.println(task.getId());
-        if(!result.hasErrors()) {
-            task.setDateCreated(LocalDate.now().toString());
-            taskService.save(task);
-            System.out.println(task + " saved");
-            model.addAttribute("tasks", taskService.findAll());
-            return "redirect:/tasks";
-        }
-        model.addAttribute("tasks", taskService.findAll());
-        return "/tasks";
-    }
+//    @PostMapping("/tasks/submit-task")
+//    public String handleForm(@Valid @ModelAttribute Task task, BindingResult result, Model model) {
+//        System.out.println(task.getId());
+//        if(!result.hasErrors()) {
+//            task.setDateCreated(LocalDate.now().toString());
+//            taskService.save(task);
+//            System.out.println(task + " saved");
+//            model.addAttribute("tasks", taskService.findAll());
+//            return "redirect:/tasks";
+//        }
+//        model.addAttribute("tasks", taskService.findAll());
+//        return "/tasks";
+//    }
 
-    @DeleteMapping("/tasks/deleteTask/{id}")
+    @DeleteMapping("/tasks/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteTask(@PathVariable Long id) {
         try {
@@ -62,7 +62,7 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    @PostMapping("/tasks/saveTask")
+    @PostMapping("/tasks")
     @ResponseBody
     public ResponseEntity<?> saveTask(@Valid @RequestBody Task task, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -77,7 +77,7 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
-    @GetMapping("/tasks/editTask/{id}")
+    @GetMapping("/tasks/{id}")
     @ResponseBody
     public Task editTask(@PathVariable Long id) {
         return taskService.find(id);
