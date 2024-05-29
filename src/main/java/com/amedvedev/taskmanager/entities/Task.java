@@ -33,7 +33,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;
+    private User user;
 
     public Task(String name, String description, LocalDate dueDate) {
         this.name = name;
