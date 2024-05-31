@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -26,22 +27,8 @@ public class TaskController {
     @GetMapping("/tasks")
     public String tasks(Model model) {
         model.addAttribute("tasks", taskService.findAll());
-        return "/tasks";
+        return "tasks";
     }
-
-//    @PostMapping("/tasks/submit-task")
-//    public String handleForm(@Valid @ModelAttribute Task task, BindingResult result, Model model) {
-//        System.out.println(task.getId());
-//        if(!result.hasErrors()) {
-//            task.setDateCreated(LocalDate.now().toString());
-//            taskService.save(task);
-//            System.out.println(task + " saved");
-//            model.addAttribute("tasks", taskService.findAll());
-//            return "redirect:/tasks";
-//        }
-//        model.addAttribute("tasks", taskService.findAll());
-//        return "/tasks";
-//    }
 
     @DeleteMapping("/tasks/{id}")
     @ResponseBody
@@ -57,9 +44,9 @@ public class TaskController {
     }
 
     @GetMapping("/clear")
-    public String clear() {
+    public RedirectView clear() {
         taskService.deleteAll();
-        return "redirect:/tasks";
+        return new RedirectView("/tasks", true, false);
     }
 
     @PostMapping("/tasks")
