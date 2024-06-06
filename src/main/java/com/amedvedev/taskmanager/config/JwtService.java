@@ -2,6 +2,9 @@ package com.amedvedev.taskmanager.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +17,22 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    private final SecretKey secretKey;
+
+    public JwtService(@Value("${jwt.secret-key}") String secretKey) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    }
+
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts
                 .builder()
+                .header().add("typ", "JWT")
+                .and()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -54,13 +66,13 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
-                .decryptWith(getSigningKey())
+                .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
     private SecretKey getSigningKey() {
-        return Jwts.SIG.HS256.key().build();
+        return secretKey;
     }
 }

@@ -1,23 +1,34 @@
 $(document).ready(function() {
+    let isEditing = false;
+
+    // Include CSRF token in the headers (for Spring Security)
+    // let csrfToken = $("meta[name='_csrf']").attr("content");
+    // let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    // const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {};
+    // headers[csrfHeader] = csrfToken;
+    headers["Content-Type"] = "application/json";
+    // headers["Authorization"] = "Bearer " + jwtToken;
+
     const taskFormDiv = $('#taskFormDivBox');
     const descCharCount = $('#characterCount');
     const table = $('#taskTable');
     const addTaskBtn = $('#addTask');
-    let isEditing = false;
 
-    // Include CSRF token in the headers (for Spring Security)
-    const csrfToken = $("meta[name='_csrf']").attr("content");
-    const csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    const headers = {};
-    headers[csrfHeader] = csrfToken;
-    headers["Content-Type"] = "application/json";
+    const taskId = $('#taskId');
+    const taskDescription = $('#taskDescription');
+    const taskName = $('#taskName');
+    const taskDateCreated = $('#taskDateCreated');
+    const taskDueDate = $('#taskDueDate');
+
+
 
     $(addTaskBtn).click(function() {
         // Clear the form fields if not in edit mode
         $('#taskId').val('');
         $('#taskName').val('');
         $('#taskDescription').val('');
-        descCharCount.text('0 / 500');
+        descCharCount.text('0 / ' + taskDescription.attr('maxlength'));
         $('#taskDateCreated').val(new Date().toISOString().substring(0, 10)); // Date in YYYY-MM-DD format
         $('#taskDueDate').val('');
         $('.error').text('');
@@ -27,15 +38,14 @@ $(document).ready(function() {
     // done this way so that new dynamically created elements also have listeners
     table.on('click', '.editBtn', function() {
         const id = $(this).data('id');
-
         $.get('/tasks/' + id, function(task) {
             // Populate the form with the task data
-            $('#taskId').val(task.id);
-            $('#taskName').val(task.name);
-            $('#taskDescription').val(task.description);
-            descCharCount.text(task.description.length + ' / 500');
-            $('#taskDateCreated').val(task.dateCreated);
-            $('#taskDueDate').val(task.dueDate);
+            taskId.val(task.id);
+            taskName.val(task.name);
+            taskDescription.val(task.description);
+            descCharCount.text(task.description.length + ' / ' + taskDescription.attr('maxlength'));
+            taskDateCreated.val(task.dateCreated);
+            taskDueDate.val(task.dueDate);
             taskFormDiv.css('display', 'flex'); // Show the form
             $('.error').text('');
             isEditing = true;
@@ -63,6 +73,8 @@ $(document).ready(function() {
             formDataDict[field.name] = field.value;
         });
 
+        console.log(headers);
+
         $.ajax({
             url: '/tasks',
             type: 'POST',
@@ -74,8 +86,8 @@ $(document).ready(function() {
                 taskFormDiv.hide();
                 isEditing = false;
             },
-            error: function(jqXHR) {
-                const errors = jqXHR.responseJSON;
+            error: function(xhr) {
+                const errors = xhr.responseJSON;
                 $('.error').text('');
                 for (const field in errors) {
                     $('#' + field + 'Error').text(errors[field]);

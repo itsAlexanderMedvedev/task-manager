@@ -1,0 +1,36 @@
+024-06-02T14:50:39.997+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /error
+2024-06-02T14:50:39.997+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2024-06-02T14:50:39.998+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /error
+2024-06-02T14:50:39.998+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for POST "/error", parameters={}
+2024-06-02T14:50:39.998+02:00 DEBUG 48201 --- [nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2024-06-02T14:50:39.999+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-06-02T14:50:40.013+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-06-02T14:50:40.014+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Jun 02 14:50:40 CEST 2024, status=403, error=Forbidden, message=Forbidden, path=/task (truncated)...]
+2024-06-02T14:50:40.036+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-06-02T14:50:40.037+02:00 DEBUG 48201 --- [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 403
+2024-06-02T14:50:42.732+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /style.css
+---------------- JWT: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzE3MzMyNTYzLCJleHAiOjE3MTc0MTg5NjN9.MGNzBuZTHI8UL706SRsPfQbawduT5CXRRd-2ck8jc98
+2024-06-02T14:50:42.736+02:00 DEBUG 48201 --- [nio-8080-exec-3] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+---------------- JWT is valid
+---------------- Set authentication to context
+2024-06-02T14:50:42.780+02:00 DEBUG 48201 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 08029CF752B3A99E7CB935406A52FB87
+2024-06-02T14:50:42.781+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.s.s.w.csrf.CsrfAuthenticationStrategy  : Replaced CSRF Token
+2024-06-02T14:50:42.781+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /style.css
+2024-06-02T14:50:42.781+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/style.css", parameters={}
+2024-06-02T14:50:42.782+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2024-06-02T14:50:42.782+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-06-02T14:50:42.784+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-06-02T14:50:42.784+02:00 DEBUG 48201 --- [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-06-02T14:51:06.968+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /tasks
+2024-06-02T14:51:06.970+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.security.web.csrf.CsrfFilter         : Invalid CSRF token found for http://localhost:8080/tasks
+2024-06-02T14:51:06.970+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.s.w.access.AccessDeniedHandlerImpl   : Responding with 403 status code
+2024-06-02T14:51:06.971+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /error
+2024-06-02T14:51:06.971+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2024-06-02T14:51:06.972+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /error
+2024-06-02T14:51:06.972+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for POST "/error", parameters={}
+2024-06-02T14:51:06.972+02:00 DEBUG 48201 --- [nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2024-06-02T14:51:06.973+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-06-02T14:51:06.976+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-06-02T14:51:06.976+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Jun 02 14:51:06 CEST 2024, status=403, error=Forbidden, message=Forbidden, path=/task (truncated)...]
+2024-06-02T14:51:06.977+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-06-02T14:51:06.978+02:00 DEBUG 48201 --- [nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 403

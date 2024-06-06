@@ -1,7 +1,9 @@
 package com.amedvedev.taskmanager.service;
 
 import com.amedvedev.taskmanager.entities.Task;
+import com.amedvedev.taskmanager.entities.User;
 import com.amedvedev.taskmanager.repositories.TaskRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +22,13 @@ public class TaskService {
     }
 
     public List<Task> findAll() {
-        return taskRepository.findAll();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return taskRepository.findAllByUserUsername(user.getUsername());
     }
 
     public void save(Task task) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        task.setUser(user);
         taskRepository.save(task);
     }
 

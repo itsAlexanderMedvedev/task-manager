@@ -1,6 +1,5 @@
 package com.amedvedev.taskmanager.config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(customizer ->
                         customizer
-                                .requestMatchers("/auth/**")
+                                .requestMatchers(
+                                        "/auth/**",
+                                        "/**.css",
+                                        "/scripts/**",
+                                        "/images/**",
+                                        "/**.html",
+                                        "/error")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

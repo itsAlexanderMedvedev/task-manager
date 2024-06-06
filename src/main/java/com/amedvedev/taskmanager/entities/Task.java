@@ -22,8 +22,8 @@ public class Task {
     @Size(max = 20, message = "maximum 20 characters")
     private String name;
 
-    @Column(length = 500)
-    @Size(max = 500, message = "maximum 500 characters")
+    @Column(length = 750)
+    @Size(max = 750, message = "maximum 750 characters")
     private String description;
 
     private LocalDate dateCreated;
@@ -31,8 +31,8 @@ public class Task {
     @PresentOrFutureDate
     private LocalDate dueDate;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "_user_username")
     private User user;
 
     public Task(String name, String description, LocalDate dueDate) {

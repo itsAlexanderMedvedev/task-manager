@@ -2,6 +2,7 @@ package com.amedvedev.taskmanager.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,18 +30,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+        String jwt = null;
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("JWT".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                }
+            }
+        }
         final String username;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (jwt == null) {
+            System.out.println("---------------- JWT is null");
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
+        System.out.println("---------------- JWT: " + jwt);
         username = jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (jwtService.isTokenValid(jwt, userDetails)) {
+                System.out.println("---------------- JWT is valid");
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -48,8 +57,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(token);
+                System.out.println("---------------- Set authentication to context");
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/auth/") ||
+                path.endsWith(".css") ||
+                path.endsWith(".html") ||
+                path.startsWith("/scripts/") ||
+                path.startsWith("/images/") ||
+                path.equals("/error");
     }
 }

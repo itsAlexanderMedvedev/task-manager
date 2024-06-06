@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/scripts/login.js"></script>
+</head>
+<body>
+<div layout:fragment="content" class="row justify-content-center mt-3">
+    <div class="col-md-6 col-lg-4">
+        <h2 class="text-center mb-4">Login</h2>
+        <form id="loginForm" action="/auth/login" method="post">
+            <div class="form-group mb-3">
+                <label for="loginUsername">Username</label>
+                <input type="text" class="form-control" id="loginUsername" name="username" required>
+                <div class="invalid-feedback" id="usernameError"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="loginPassword">Password</label>
+                <input type="password" class="form-control" id="loginPassword" name="password" required>
+                <div class="invalid-feedback" id="passwordError"></div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

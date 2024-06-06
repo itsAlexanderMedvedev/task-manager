@@ -22,6 +22,10 @@
     margin: 0;
 }
 
+#taskDescription {
+    max-height: 50vh;
+}
+
 .close-form {
     cursor: pointer;
     width: 30px;
