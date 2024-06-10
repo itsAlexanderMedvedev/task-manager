@@ -1,12 +1,14 @@
 package com.amedvedev.taskmanager.auth;
 
 import com.amedvedev.taskmanager.config.JwtService;
-import com.amedvedev.taskmanager.entities.Role;
-import com.amedvedev.taskmanager.entities.User;
-import com.amedvedev.taskmanager.repositories.UserRepository;
+import com.amedvedev.taskmanager.entitiy.Role;
+import com.amedvedev.taskmanager.entitiy.User;
+import com.amedvedev.taskmanager.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,14 +43,16 @@ public class AuthenticationService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         String token = jwtService.generateToken(user);
 
-        Cookie jwtCookie = new Cookie("JWT", token);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(true);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(24 * 60 * 60); // 24 hours
+        ResponseCookie jwtCookie = ResponseCookie
+                .from("JWT", token)
+                .httpOnly(true)
+                .secure(false) // should be true in real world (doesn't work with http localhost in safari)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(24 * 60 * 60)
+                .build();
 
-        // Add the cookie to the response
-        response.addCookie(jwtCookie);
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
 
         return new AuthenticationResponse(token);
     }

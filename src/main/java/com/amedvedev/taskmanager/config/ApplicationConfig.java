@@ -1,6 +1,6 @@
 package com.amedvedev.taskmanager.config;
 
-import com.amedvedev.taskmanager.repositories.UserRepository;
+import com.amedvedev.taskmanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

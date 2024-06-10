@@ -22,9 +22,9 @@ $(document).ready(function() {
     const taskDueDate = $('#taskDueDate');
 
 
-
+    // ADDING
     $(addTaskBtn).click(function() {
-        // Clear the form fields if not in edit mode
+        // Clear the form fields
         $('#taskId').val('');
         $('#taskName').val('');
         $('#taskDescription').val('');
@@ -35,6 +35,7 @@ $(document).ready(function() {
         taskFormDiv.css('display', 'flex'); // Show the form
     });
 
+    // EDITING
     // done this way so that new dynamically created elements also have listeners
     table.on('click', '.editBtn', function() {
         const id = $(this).data('id');
@@ -52,6 +53,7 @@ $(document).ready(function() {
         });
     });
 
+    // DELETING
     table.on('click', '.deleteBtn', function() {
         const id = $(this).data('id');
         $.ajax({
@@ -64,6 +66,7 @@ $(document).ready(function() {
         });
     });
 
+    // SAVING
     $('#taskForm').submit(function(e) {
         e.preventDefault();
 
@@ -72,8 +75,6 @@ $(document).ready(function() {
         $.each(formDataArray, function(i, field){
             formDataDict[field.name] = field.value;
         });
-
-        console.log(headers);
 
         $.ajax({
             url: '/tasks',
@@ -96,45 +97,39 @@ $(document).ready(function() {
         });
     });
 
-
     function updateOrAddTableRow(formDataDict) {
         const existingRow = $('.task-row[data-id="' + formDataDict.id + '"]');
 
         if (existingRow.length > 0 && formDataDict.id !== '') {
-            existingRow.find('td:eq(1)').text(formDataDict.name);
-            existingRow.find('.description-column').text(formDataDict.description);
-            existingRow.find('td:eq(3)').text(formDataDict.dateCreated);
-            existingRow.find('td:eq(4)').text(formDataDict.dueDate);
+            updateRow(existingRow, formDataDict);
         } else {
-            const newRow = $('<tr class="task-row" data-id="' + formDataDict.id + '"></tr>');
-            newRow.append('' +
-                '<td>' +
-                '   <div>' +
-                '       <label>' +
-                '           <input type="checkbox" class="task-completed-checkbox">' +
-                '       </label>' +
-                '   </div>' +
-                '</td>');
-            newRow.append('<td>' + formDataDict.name + '</td>');
-            newRow.append('<td><div class="description-column">' + formDataDict.description + '</div></td>');
-            newRow.append('<td>' + formDataDict.dateCreated + '</td>');
-            newRow.append('<td>' + formDataDict.dueDate + '</td>');
-            newRow.append('' +
-                '<td>' +
-                    '<div class="controls-container">' +
-                        '<button class="control-btn editBtn" data-id="' + formDataDict.id + '">' +
-                            '<img src="/images/edit.svg" alt="edit">' +
-                        '</button>' +
-                        '<button class="control-btn deleteBtn" data-id="' + formDataDict.id + '">' +
-                            '<img src="/images/cross.svg" alt="delete">' +
-                        '</button>' +
-                    '</div>' +
-                '</td>');
-
-            $('#taskTable tbody').append(newRow);
+            const row = createNewRow(formDataDict);
+            $('#taskTable tbody').append(row);
         }
     }
 
+    // SORTING
+    $('th[data-sort]').on('click', function() {
+        const column = $(this).data('sort');
+        const order = table.data('order') === 'asc' ? 'desc' : 'asc';
+        table.data('order', order);
+
+        $.ajax({
+            url: '/tasks/sort',
+            method: 'GET',
+            data: { sort: column, order: order },
+            success: function(data) {
+                let rows = '';
+                // console.log(data);
+                $.each(data, function(index, task) {
+                    rows += createNewRow(task).prop('outerHTML');
+                });
+                $('#taskTable tbody').html(rows);
+            }
+        });
+    });
+
+    // CLOSING THE FORM ON CLICKING CLOSE BUTTON OR OUTSIDE THE FORM
     $('#taskFormDivCloseBtn').click(function() {
         taskFormDiv.hide();
         isEditing = false;
@@ -145,4 +140,47 @@ $(document).ready(function() {
             taskFormDiv.hide();
         }
     });
+    // ----------------------------
 });
+
+
+function updateCharacterCount() {
+    let textarea = $("#taskDescription");
+    $("#characterCount").text(textarea.val().length + " / " + textarea.attr("maxlength"));
+}
+
+function createNewRow(task) {
+    const newRow = $('<tr class="task-row" data-id="' + task.id + '"></tr>');
+    newRow.append('' +
+        '<td>' +
+        '   <div>' +
+        '       <label>' +
+        '           <input type="checkbox" class="task-completed-checkbox">' +
+        '       </label>' +
+        '   </div>' +
+        '</td>');
+    newRow.append('<td>' + task.name + '</td>');
+    newRow.append('<td><div class="description-column">' + task.description + '</div></td>');
+    newRow.append('<td>' + task.dateCreated + '</td>');
+    newRow.append('<td>' + task.dueDate + '</td>');
+    newRow.append('' +
+        '<td>' +
+        '<div class="controls-container">' +
+        '<button class="control-btn editBtn" data-id="' + task.id + '">' +
+        '<img src="/images/edit.svg" alt="edit">' +
+        '</button>' +
+        '<button class="control-btn deleteBtn" data-id="' + task.id + '">' +
+        '<img src="/images/cross.svg" alt="delete">' +
+        '</button>' +
+        '</div>' +
+        '</td>');
+
+    return newRow;
+}
+
+function updateRow(existingRow, task) {
+    existingRow.find('td:eq(1)').text(task.name);
+    existingRow.find('.description-column').text(task.description);
+    existingRow.find('td:eq(3)').text(task.dateCreated);
+    existingRow.find('td:eq(4)').text(task.dueDate);
+}

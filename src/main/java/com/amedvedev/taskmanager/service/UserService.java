@@ -1,6 +1,6 @@
 package com.amedvedev.taskmanager.service;
 
-import com.amedvedev.taskmanager.repositories.UserRepository;
+import com.amedvedev.taskmanager.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service

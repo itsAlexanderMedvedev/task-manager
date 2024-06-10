@@ -1,4 +1,4 @@
-package com.amedvedev.taskmanager.entities;
+package com.amedvedev.taskmanager.entitiy;
 
 import jakarta.persistence.*;
 import lombok.*;

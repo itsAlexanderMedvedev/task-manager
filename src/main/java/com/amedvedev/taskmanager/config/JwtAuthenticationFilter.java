@@ -40,16 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         final String username;
         if (jwt == null) {
-            System.out.println("---------------- JWT is null");
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("---------------- JWT: " + jwt);
         username = jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (jwtService.isTokenValid(jwt, userDetails)) {
-                System.out.println("---------------- JWT is valid");
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -57,7 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(token);
-                System.out.println("---------------- Set authentication to context");
             }
         }
         filterChain.doFilter(request, response);

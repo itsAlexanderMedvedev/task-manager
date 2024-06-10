@@ -1,4 +1,4 @@
-package com.amedvedev.taskmanager.entities;
+package com.amedvedev.taskmanager.entitiy;
 
 import com.amedvedev.taskmanager.validation.PresentOrFutureDate;
 import jakarta.persistence.*;
@@ -54,6 +54,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dueDate=" + dueDate +
+                ", user=" + user +
                 '}';
     }
 }

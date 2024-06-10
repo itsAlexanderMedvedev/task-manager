@@ -1,6 +1,6 @@
-package com.amedvedev.taskmanager.repositories;
+package com.amedvedev.taskmanager.repository;
 
-import com.amedvedev.taskmanager.entities.User;
+import com.amedvedev.taskmanager.entitiy.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

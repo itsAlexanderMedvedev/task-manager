@@ -1,7 +1,8 @@
 package com.amedvedev.taskmanager.controller;
 
+import com.amedvedev.taskmanager.dto.TaskDTO;
 import com.amedvedev.taskmanager.service.TaskService;
-import com.amedvedev.taskmanager.entities.Task;
+import com.amedvedev.taskmanager.entitiy.Task;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
 
@@ -24,32 +25,25 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/tasks")
+    @GetMapping("/sort")
+    public ResponseEntity<List<TaskDTO>> sortTasks(@RequestParam(required = false) String sort,
+                                                   @RequestParam(required = false) String order) {
+        return ResponseEntity.ok(taskService.findAll(sort, order));
+    }
+
+    @GetMapping
     public String tasks(Model model) {
         model.addAttribute("tasks", taskService.findAll());
         return "tasks";
     }
 
-    @DeleteMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
-        try {
-            taskService.delete(id);
-            return ResponseEntity.ok("Record deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    "Failed to delete record with id " + id + ": " + e.getMessage()
-            );
-        }
+    public Task findTaskById(@PathVariable Long id) {
+        return taskService.find(id);
     }
 
-    @GetMapping("/clear")
-    public RedirectView clear() {
-        taskService.deleteAll();
-        return new RedirectView("/tasks", true, false);
-    }
-
-    @PostMapping("/tasks")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<?> saveTask(@Valid @RequestBody Task task, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -64,9 +58,16 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
-    @GetMapping("/tasks/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
-    public Task findTaskById(@PathVariable Long id) {
-        return taskService.find(id);
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
+        try {
+            taskService.delete(id);
+            return ResponseEntity.ok("Record deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    "Failed to delete record with id " + id + ": " + e.getMessage()
+            );
+        }
     }
 }
