@@ -44,20 +44,22 @@
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                     <div class="card-body p-4 p-lg-5 text-black">
-                        <form action="/auth/login" method="post">
+                        <form id="loginForm" action="/auth/login" method="post">
                             <div class="d-flex align-items-center mb-3 pb-1">
                                 <img src="/static/images/Logo.png" th:src="@{/images/Logo.png}" class="img-fluid" alt="Logo"/>
                             </div>
                             <h5 class="fw-normal mb-3 pb-3">Sign in to your account</h5>
 
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="email">Email address</label>
-                                <input name="username" type="text" class="form-control" id="email"/>
+                                <div class="invalid-feedback" id="usernameError"></div>
+                                <input type="text" class="form-control" id="loginUsername" name="username" required>
+                                <label class="form-label" for="loginUsername">Username</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="password">Password</label>
-                                <input name="password" type="password" class="form-control" id="password"/>
+                                <div class="invalid-feedback" id="passwordError"></div>
+                                <input type="password" class="form-control" id="loginPassword" name="password" required>
+                                <label class="form-label" for="loginPassword">Password</label>
                             </div>
 
                             <div th:if="${param.error}" class="p-3 text-primary-emphasis bg-danger-subtle rounded-3 mb-4">

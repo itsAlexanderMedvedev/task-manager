@@ -31,8 +31,11 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody LoginRequest request, HttpServletResponse response) {
         return ResponseEntity.ok(authenticationService.login(request, response));
-
     }
 
-
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        System.out.println("logout endpoint called");
+        return authenticationService.logout(response);
+    }
 }

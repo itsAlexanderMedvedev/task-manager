@@ -1,5 +1,6 @@
 package com.amedvedev.taskmanager.config;
 
+import com.amedvedev.taskmanager.auth.CustomLogoutHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomLogoutHandler customLogoutHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,13 +34,20 @@ public class SecurityConfig {
                                         "/scripts/**",
                                         "/images/**",
                                         "/**.html",
-                                        "/error")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
+                                        "/error").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .formLogin(customizer ->
-                        customizer.loginPage("/auth/login").permitAll()
+                .logout(
+                        customizer -> customizer
+                                .logoutUrl("/auth/logout")
+                                .deleteCookies("JWT")
+                                .addLogoutHandler(customLogoutHandler)
+                                .logoutSuccessUrl("/auth/login")
+                )
+                .exceptionHandling(customizer ->
+                        customizer.authenticationEntryPoint(
+                                (request, response, authException) -> response.sendRedirect("/auth/login")
+                        )
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

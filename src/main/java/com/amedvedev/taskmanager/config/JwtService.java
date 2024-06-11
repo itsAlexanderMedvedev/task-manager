@@ -5,19 +5,25 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
     private final SecretKey secretKey;
+    private final Map<String, Instant> blacklistedTokens = new ConcurrentHashMap<>();
 
     public JwtService(@Value("${jwt.secret-key}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -74,5 +80,18 @@ public class JwtService {
 
     private SecretKey getSigningKey() {
         return secretKey;
+    }
+
+    public void blacklistToken(String token, Instant expiryDate) {
+        blacklistedTokens.put(token, expiryDate);
+    }
+
+    public boolean isTokenBlacklisted(String token) {
+        return blacklistedTokens.containsKey(token);
+    }
+
+    @Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 1)
+    public void removeExpiredTokens() {
+        blacklistedTokens.entrySet().removeIf(entry -> entry.getValue().isBefore(Instant.now()));
     }
 }

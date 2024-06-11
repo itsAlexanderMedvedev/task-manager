@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,7 +47,7 @@ public class AuthenticationService {
         ResponseCookie jwtCookie = ResponseCookie
                 .from("JWT", token)
                 .httpOnly(true)
-                .secure(false) // should be true in real world (doesn't work with http localhost in safari)
+                .secure(false) // should be true in the real world (doesn't work with http localhost in safari)
                 .path("/")
                 .sameSite("Strict")
                 .maxAge(24 * 60 * 60)
@@ -55,5 +56,19 @@ public class AuthenticationService {
         response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
 
         return new AuthenticationResponse(token);
+    }
+
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        ResponseCookie jwtCookie = ResponseCookie
+                .from("JWT", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(0)  // Deletes the cookie
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -10,6 +10,8 @@ $(document).ready(function () {
             password: $('#loginPassword').val()
         };
 
+        console.log(user);
+
         $.ajax({
             url: '/auth/login',
             type: 'POST',

@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('#registerForm').on('submit', function(event) {
         event.preventDefault();
+        console.log("EXECUTED")
 
         const csrfToken = $('meta[name="_csrf"]').attr('content');
         const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
@@ -16,7 +17,7 @@ $(document).ready(function () {
             password: $('#registerPassword').val()
         };
 
-        console.log(csrfHeader + ' ' + csrfToken);
+        console.log(user);
 
         $.ajax({
             url: '/auth/register',
