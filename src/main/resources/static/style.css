@@ -9,6 +9,11 @@ body {
     max-width: 1300px;
 }
 
+#email, #password {
+    padding: 10px;
+    font-size: 16px;
+}
+
 .logout-button {
     margin-left: .5rem;
 }

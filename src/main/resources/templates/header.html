@@ -6,73 +6,37 @@
 </head>
 <body>
     <header th:fragment="myHeader">
-<!--        <nav class="navbar navbar-expand-lg navbar-light">-->
-<!--            <div class="container-fluid">-->
-<!--                <a class="navbar-brand" th:href="@{/tasks}">TaskMaster</a>-->
-<!--                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--                    <span class="navbar-toggler-icon"></span>-->
-<!--                </button>-->
-<!--                <div class="collapse navbar-collapse" id="navbarNav">-->
-<!--                    <ul class="navbar-nav ms-auto" th:unless="${#authentication.isAuthenticated()}">-->
-<!--                        <li class="nav-item">-->
-<!--                            <a class="nav-link" th:href="@{/auth/login}">Login</a>-->
-<!--                        </li>-->
-<!--                        <li class="nav-item">-->
-<!--                            <a class="nav-link" th:href="@{/auth/register}">Register</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                    <ul class="navbar-nav ms-auto" th:if="${#authentication.isAuthenticated()}">-->
-<!--                        <li class="nav-item">-->
-<!--                            <span class="navbar-text" th:text="|Hello, ${#authentication.name}|"></span>-->
-<!--                        </li>-->
-<!--                        <li class="nav-item">-->
-<!--                            <form action="/logout" method="post" class="nav-link">-->
-<!--                                <button type="submit">Logout</button>-->
-<!--                            </form>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </nav>-->
-        <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">TaskMaster</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" th:if="${#authentication.isAuthenticated()}">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-primary" type="submit">Search</button>
-                    </form>
-                    <form action="/logout" method="post" class="logout-button">
-                        <button type="submit" class="btn btn-outline-danger">Logout</button>
-                    </form>
-                </div>
-                <div class="collapse navbar-collapse" th:unless="${#authentication.isAuthenticated()}">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Register</a>
-                        </li>
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" th:href="@{/tasks}">TaskMaster</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" th:if="${#authentication.isAuthenticated()}">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Statistics</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+                <form action="/logout" method="post" class="logout-button">
+                    <button type="submit" class="btn btn-outline-danger">Logout</button>
+                </form>
+            </div>
+            <div class="collapse navbar-collapse" th:unless="${#authentication.isAuthenticated()}">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Register</a>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>

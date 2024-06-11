@@ -37,9 +37,10 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated()
                 )
-                .sessionManagement(customizer ->
-                        customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .formLogin(customizer ->
+                        customizer.loginPage("/auth/login").permitAll()
                 )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
