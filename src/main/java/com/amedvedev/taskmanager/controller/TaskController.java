@@ -46,6 +46,8 @@ public class TaskController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<?> saveTask(@Valid @RequestBody Task task, BindingResult bindingResult) {
+        System.out.println("CONTROLLER TASK: " + task);
+        System.out.println("CONTROLLER BINDING RESULT: " + bindingResult.hasErrors());
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {

@@ -20,6 +20,7 @@ $(document).ready(function() {
     const taskName = $('#taskName');
     const taskDateCreated = $('#taskDateCreated');
     const taskDueDate = $('#taskDueDate');
+    const taskSubmitBtn = $('#taskSubmitBtn');
 
 
     // ADDING
@@ -70,6 +71,8 @@ $(document).ready(function() {
     $('#taskForm').submit(function(e) {
         e.preventDefault();
 
+        taskSubmitBtn.attr('disabled', 'disabled');
+
         const formDataArray = $('#taskForm').serializeArray();
         const formDataDict = {};
         $.each(formDataArray, function(i, field){
@@ -93,6 +96,9 @@ $(document).ready(function() {
                 for (const field in errors) {
                     $('#' + field + 'Error').text(errors[field]);
                 }
+            },
+            complete: function() {
+                taskSubmitBtn.removeAttr('disabled');
             }
         });
     });

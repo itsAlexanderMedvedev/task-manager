@@ -29,10 +29,13 @@ public class TaskService {
     }
 
     public List<TaskDTO> findAll(String sort, String order) {
-        Sort.Direction direction = (order == null || order.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort.Direction direction =
+                (order == null || order.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+
         if (sort == null) {
-            sort = "dueDate";
+            sort = "id";
         }
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Task> tasks = taskRepository.findAllByUserUsername(user.getUsername(), Sort.by(direction, sort));
         return tasks.stream()
