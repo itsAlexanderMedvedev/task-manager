@@ -1,9 +1,13 @@
 package com.amedvedev.taskmanager.controller;
 
 import com.amedvedev.taskmanager.dto.TaskDTO;
+import com.amedvedev.taskmanager.dto.TaskSummaryDTO;
+import com.amedvedev.taskmanager.entitiy.Category;
+import com.amedvedev.taskmanager.repository.CategoryRepository;
 import com.amedvedev.taskmanager.service.TaskService;
 import com.amedvedev.taskmanager.entitiy.Task;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,22 +16,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
+
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
-
     @GetMapping("/sort")
-    public ResponseEntity<List<TaskDTO>> sortTasks(@RequestParam(required = false) String sort,
-                                                   @RequestParam(required = false) String order) {
+    public ResponseEntity<List<TaskSummaryDTO>> sortTasks(@RequestParam(required = false) String sort,
+                                                          @RequestParam(required = false) String order) {
         return ResponseEntity.ok(taskService.findAll(sort, order));
     }
 
@@ -39,15 +39,13 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Task findTaskById(@PathVariable Long id) {
+    public TaskDTO findTaskById(@PathVariable Long id) {
         return taskService.find(id);
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> saveTask(@Valid @RequestBody Task task, BindingResult bindingResult) {
-        System.out.println("CONTROLLER TASK: " + task);
-        System.out.println("CONTROLLER BINDING RESULT: " + bindingResult.hasErrors());
+    public ResponseEntity<?> saveTask(@Valid @RequestBody TaskDTO taskDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
@@ -56,8 +54,8 @@ public class TaskController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
 
-        taskService.save(task);
-        return new ResponseEntity<>(task, HttpStatus.CREATED);
+        taskService.save(taskDTO);
+        return new ResponseEntity<>(taskDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

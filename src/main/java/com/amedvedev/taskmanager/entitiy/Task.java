@@ -3,10 +3,13 @@ package com.amedvedev.taskmanager.entitiy;
 import com.amedvedev.taskmanager.validation.PresentOrFutureDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,26 +38,10 @@ public class Task {
     @JoinColumn(name = "_user_username")
     private User user;
 
-    public Task(String name, String description, LocalDate dueDate) {
-        this.name = name;
-        this.description = description;
-        this.dateCreated = LocalDate.now();
-        this.dueDate = dueDate;
-    }
-
-    public void setDateCreated(String date) {
-        this.dateCreated = LocalDate.parse(date);
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", dateCreated=" + dateCreated +
-                ", dueDate=" + dueDate +
-                ", user=" + user +
-                '}';
-    }
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "task_category",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories = new ArrayList<>();
+    private String priority;
 }
