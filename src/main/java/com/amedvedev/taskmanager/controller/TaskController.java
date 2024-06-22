@@ -1,11 +1,9 @@
 package com.amedvedev.taskmanager.controller;
 
+import com.amedvedev.taskmanager.dto.FilterDTO;
 import com.amedvedev.taskmanager.dto.TaskDTO;
 import com.amedvedev.taskmanager.dto.TaskSummaryDTO;
-import com.amedvedev.taskmanager.entitiy.Category;
-import com.amedvedev.taskmanager.repository.CategoryRepository;
 import com.amedvedev.taskmanager.service.TaskService;
-import com.amedvedev.taskmanager.entitiy.Task;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,12 +22,6 @@ import java.util.*;
 public class TaskController {
 
     private final TaskService taskService;
-
-    @GetMapping("/sort")
-    public ResponseEntity<List<TaskSummaryDTO>> sortTasks(@RequestParam(required = false) String sort,
-                                                          @RequestParam(required = false) String order) {
-        return ResponseEntity.ok(taskService.findAll(sort, order));
-    }
 
     @GetMapping
     public String tasks(Model model) {
@@ -69,5 +61,26 @@ public class TaskController {
                     "Failed to delete record with id " + id + ": " + e.getMessage()
             );
         }
+    }
+
+    @GetMapping("/sort")
+    public ResponseEntity<List<TaskSummaryDTO>> sortTasks(@RequestParam(required = false) String sort,
+                                                          @RequestParam(required = false) String order,
+                                                          @ModelAttribute FilterDTO filterDTO) {
+
+        var data = taskService.findAll(sort, order, filterDTO);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<TaskSummaryDTO>> filterTasks(@ModelAttribute FilterDTO filterDTO) {
+        var data = taskService.findAll(filterDTO);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<TaskSummaryDTO>> searchTasks(@RequestParam String term) {
+        var data = taskService.search(term);
+        return ResponseEntity.ok(data);
     }
 }

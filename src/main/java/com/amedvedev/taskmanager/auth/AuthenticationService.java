@@ -4,13 +4,15 @@ import com.amedvedev.taskmanager.config.JwtService;
 import com.amedvedev.taskmanager.entitiy.Role;
 import com.amedvedev.taskmanager.entitiy.User;
 import com.amedvedev.taskmanager.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,10 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity<?> register(RegisterRequest request) {
+        if (userRepository.findByUsernameIgnoreCase(request.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+        }
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
@@ -33,15 +38,21 @@ public class AuthenticationService {
                 .build();
         userRepository.save(user);
         String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+        return ResponseEntity.ok(new AuthenticationResponse(token));
     }
 
-    public AuthenticationResponse login(LoginRequest request, HttpServletResponse response) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        User user = userRepository.findByUsername(request.getUsername())
+    public ResponseEntity<?> login(LoginRequest request, HttpServletResponse response) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
+        } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+
+        User user = userRepository.findByUsernameIgnoreCase(request.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         String token = jwtService.generateToken(user);
 
         ResponseCookie jwtCookie = ResponseCookie
@@ -55,20 +66,6 @@ public class AuthenticationService {
 
         response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
 
-        return new AuthenticationResponse(token);
-    }
-
-    public ResponseEntity<Void> logout(HttpServletResponse response) {
-        ResponseCookie jwtCookie = ResponseCookie
-                .from("JWT", "")
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .sameSite("Strict")
-                .maxAge(0)  // Deletes the cookie
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new AuthenticationResponse(token));
     }
 }

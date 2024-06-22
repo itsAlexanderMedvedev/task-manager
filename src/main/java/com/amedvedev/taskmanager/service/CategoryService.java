@@ -6,8 +6,6 @@ import com.amedvedev.taskmanager.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class CategoryService {
@@ -15,10 +13,19 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public Category findByNameAndUser(String name, User user) {
-        return categoryRepository.findByNameAndUser(name, user);
+        return categoryRepository.findByUserAndName(user, name);
     }
 
     public Iterable<String> findAllByUser(User user) {
         return categoryRepository.findAllByUser(user).stream().map(Category::getName).toList();
+    }
+
+    public Category createCategory(String name, User user) {
+        Category category = Category.builder()
+                .name(name)
+                .user(user)
+                .build();
+
+        return categoryRepository.save(category);
     }
 }

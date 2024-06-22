@@ -1,12 +1,7 @@
 $(document).ready(function () {
     $('#registerForm').on('submit', function(event) {
         event.preventDefault();
-        console.log("EXECUTED")
 
-        const csrfToken = $('meta[name="_csrf"]').attr('content');
-        const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
-
-        // Clear previous error messages
         $('#usernameError').text('');
         $('#emailError').text('');
         $('#passwordError').text('');
@@ -17,30 +12,24 @@ $(document).ready(function () {
             password: $('#registerPassword').val()
         };
 
-        console.log(user);
-
         $.ajax({
             url: '/auth/register',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(user),
-            headers: {
-                // [csrfHeader]: csrfToken
-            },
             success: function() {
                 alert('Registration successful!');
                 window.location.href = '/auth/login';
             },
             error: function(xhr) {
-                const errors = xhr.responseJSON;
-                if (errors.username) {
-                    $('#usernameError').text(errors.username).show();
-                }
-                if (errors.email) {
-                    $('#emailError').text(errors.email).show();
-                }
-                if (errors.password) {
-                    $('#passwordError').text(errors.password).show();
+                if (xhr.responseJSON) {
+                    const errors = xhr.responseJSON['errors'];
+
+                    for (const errNum in errors) {
+                        $('#' + errors[errNum]['field'] + 'Error').text(errors[errNum]['defaultMessage']);
+                    }
+                } else if (xhr.responseText === 'Username already exists') {
+                    $('#usernameError').text('Username already exists');
                 }
             }
         });

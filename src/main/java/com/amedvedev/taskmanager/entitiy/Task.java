@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +22,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
-    @Size(max = 20, message = "maximum 20 characters")
     private String name;
 
-    @Column(length = 750)
-    @Size(max = 750, message = "maximum 750 characters")
     private String description;
 
     private LocalDate dateCreated;
 
-    @PresentOrFutureDate
     private LocalDate dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

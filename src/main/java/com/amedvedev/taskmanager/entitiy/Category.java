@@ -1,14 +1,15 @@
 package com.amedvedev.taskmanager.entitiy;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Category {
@@ -19,6 +20,7 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "categories")
-    private Set<Task> tasks;
+    private Set<Task> tasks = new HashSet<>();
 }

@@ -13,36 +13,13 @@
     <script src="/scripts/register.js"></script>
 </head>
 <body>
-<!--<div layout:fragment="content" class="row justify-content-center mt-3">-->
-<!--    <div class="col-md-6 col-lg-4">-->
-<!--        <h2 class="text-center mb-4">Register</h2>-->
-<!--        <form id="registerForm" action="/auth/register" method="post">-->
-<!--            <div class="form-group mb-3">-->
-<!--                <label for="registerUsername">Username</label>-->
-<!--                <input type="text" class="form-control" id="registerUsername" name="username" required>-->
-<!--                <div class="invalid-feedback" id="usernameError"></div>-->
-<!--            </div>-->
-<!--            <div class="form-group mb-3">-->
-<!--                <label for="registerEmail">Email</label>-->
-<!--                <input type="email" class="form-control" id="registerEmail" name="email" required>-->
-<!--                <div class="invalid-feedback" id="emailError"></div>-->
-<!--            </div>-->
-<!--            <div class="form-group mb-3">-->
-<!--                <label for="registerPassword">Password</label>-->
-<!--                <input type="password" class="form-control" id="registerPassword" name="password" required>-->
-<!--                <div class="invalid-feedback" id="passwordError"></div>-->
-<!--            </div>-->
-<!--            <button type="submit" class="btn btn-primary w-100">Register</button>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-<div layout:fragment="content" class="py-5 h-100">
+<div layout:fragment="content" class="py-5">
     <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-xl-10 card rounded-4 p-0">
+        <div class="col col-xl-9 card rounded-4 p-0">
             <div class="row g-0">
                 <div class="col-md-6 col-lg-5 d-none d-md-block">
                     <img src="/static/images/background.png" th:src="@{/images/background.png}"
-                         class="img-fluid rounded-start-4 h-100" alt="background"/>
+                         class="img-fluid rounded-start-4" alt="background"/>
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                     <div class="card-body p-4 p-lg-5 text-black">
@@ -52,25 +29,21 @@
                             </div>
                             <h5 class="fw-normal mb-3 pb-3">Register account</h5>
                             <div class="form-outline mb-4">
-                                <div class="invalid-feedback" id="usernameError"></div>
+                                <span class="login-register-error" id="usernameError"></span>
                                 <input type="text" class="form-control" id="registerUsername" name="username" required>
                                 <label class="form-label" for="registerUsername">Username</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <div class="invalid-feedback" id="emailError"></div>
+                                <span class="login-register-error" id="emailError"></span>
                                 <input type="email" class="form-control" id="registerEmail" name="email" required>
                                 <label class="form-label" for="registerEmail">Email address</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <div class="invalid-feedback" id="passwordError"></div>
+                                <span class="login-register-error" id="passwordError"></span>
                                 <input type="password" class="form-control" id="registerPassword" name="password" required>
                                 <label class="form-label" for="registerPassword">Password</label>
-                            </div>
-
-                            <div th:if="${param.error}" class="p-3 text-primary-emphasis bg-danger-subtle rounded-3 mb-4">
-                                Invalid username or password.
                             </div>
 
                             <div class="pt-1 mb-4">

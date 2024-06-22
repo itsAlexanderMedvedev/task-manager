@@ -1,6 +1,7 @@
 package com.amedvedev.taskmanager.auth;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+        return authenticationService.register(request);
     }
 
     @GetMapping("/login")
@@ -29,13 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody LoginRequest request, HttpServletResponse response) {
-        return ResponseEntity.ok(authenticationService.login(request, response));
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletResponse response) {
-        System.out.println("logout endpoint called");
-        return authenticationService.logout(response);
+    public ResponseEntity<?> register(@RequestBody LoginRequest request, HttpServletResponse response) {
+        return authenticationService.login(request, response);
     }
 }

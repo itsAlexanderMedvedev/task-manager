@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 @Builder
@@ -19,4 +20,8 @@ public class TaskSummaryDTO {
     private LocalDate dueDate;
     private String categories;
     private String priority;
+
+    public int daysTillDeadline() {
+        return (int) LocalDate.now().until(dueDate, ChronoUnit.DAYS);
+    }
 }

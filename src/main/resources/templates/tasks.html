@@ -6,8 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <meta name="_csrf" th:content="${_csrf.token}" />-->
-<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}" />-->
     <title>Task Master</title>
 
 
@@ -21,20 +19,28 @@
 </head>
 <body>
 <div layout:fragment="content" class="mt-3">
-    <button class="btn btn-primary btn-sm mb-2" id="addTask">Create Task</button>
-    <button class="btn btn-primary btn-sm mb-2" id="addCategory">Create Category</button>
+    <button class="btn btn-primary" id="addTask">Create Task</button>
+    <div class="actions-container">
+        <form id="filterForm">
+            <div class="filters-container">
+                <label for="filterSelect">Filter tasks: </label>
+                <select id="filterSelect" class="form-select" name="filters" multiple></select>
+            </div>
+<!--            <button type="submit" class="btn btn-primary btn-sm">Apply Filters</button>-->
+        </form>
+    </div>
     <div class="table-responsive">
         <table class="table table-light align-middle" id="taskTable">
             <thead>
                 <tr class="my-vertical-align-center">
                     <th scope="col" data-sort="name">Name</th>
                     <th scope="col" data-sort="dueDate">Due Date</th>
-                    <th scope="col" data-sort="dueDate">Categories</th>
-                    <th scope="col" data-sort="dueDate">Priority</th>
+                    <th scope="col">Categories</th>
+                    <th scope="col" data-sort="priority">Priority</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="task : ${tasks}" class="task-row" th:data-id="${task.id}">
+                <tr th:each="task : ${tasks}" class="task-row" th:data-id="${task.id}" th:classappend="${task.daysTillDeadline() <= 1 ? 'due-in-one-day' : (task.daysTillDeadline() == 2 ? 'due-in-two-days' : '')}">
                     <td th:text="${task.name}"></td>
                     <td th:text="${task.dueDate}"></td>
                     <td th:text="${task.categories}"></td>
@@ -60,14 +66,14 @@
 
 
                         <!-- Task Name -->
-                        <div class="form-group">
+                        <div class="form-group mb-1">
                             <label for="taskName">Task Name:</label>
                             <input type="text" class="form-control" id="taskName" name="name" placeholder="Name" required>
                             <span class="error" id="nameError"></span>
                         </div>
 
                         <!-- Task Description -->
-                        <div class="form-group">
+                        <div class="form-group mb-1">
                             <label for="taskDescription">Task Description:</label>
                             <textarea class="form-control"
                                       id="taskDescription"
@@ -81,35 +87,50 @@
                         </div>
 
                         <!-- Task Due Date -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-1">
                             <label for="taskDueDate">Due Date:</label>
                             <input type="date" class="form-control" id="taskDueDate" name="dueDate" required>
                             <span class="error" id="dueDateError"></span>
                         </div>
 
                         <!-- Task Categories -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-1">
                             <label for="taskCategories">Categories:</label>
-                            <select class="form-control"
-                                    id="taskCategories"
-                                    data-placeholder="Categories"
-                                    name="categories"
-                                    multiple>
-                            </select>
+                            <div class="categories-container">
+                                <select class="form-select category-dropdown"
+                                        id="taskCategories"
+                                        name="categories"
+                                        multiple>
+                                </select>
+                                <button type="button"
+                                        class="btn btn-outline-secondary"
+                                        id="addCategoryBtn"
+                                        data-bs-target="#categoryModal"
+                                        data-bs-toggle="modal"
+                                        data-bs-dismiss="modal" onclick="clearCategoryModal()">+</button>
+                            </div>
                             <span class="error" id="categoriesError"></span>
                         </div>
-
-
-
+                        
                         <!-- Task Priority -->
                         <div class="form-group mb-3">
                             <label for="taskPriority">Priority:</label>
-                            <input type="text" class="form-control" id="taskPriority" name="priority" placeholder="Priority" required>
-                            <span class="error" id="taskPriorityError"></span>
+                            <select class="form-select priority-dropdown"
+                                    id="taskPriority"
+                                    name="priority">
+
+                                <option></option>
+                                <option>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                            </select>
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary w-100" id="taskSubmitBtn">Submit</button>
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-primary w-100" id="taskSubmitBtn">Submit</button>
+                            <button type="button" class="btn btn-danger w-100" id="taskDeleteBtn">Delete</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -126,9 +147,9 @@
                     <form id="categoryForm">
                         <div class="form-group">
                             <label for="categoryName">Category Name:</label>
-                            <input type="text" class="form-control" id="categoryName" name="name" required>
+                            <input placeholder="Name" type="text" class="form-control" id="categoryName" name="name" required>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-2">Create</button>
+                        <button type="submit" class="btn btn-primary mt-2" data-bs-target="#taskFormModal" data-bs-toggle="modal" data-bs-dismiss="modal">Create</button>
                     </form>
                 </div>
             </div>

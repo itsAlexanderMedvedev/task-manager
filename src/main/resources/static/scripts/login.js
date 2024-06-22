@@ -2,24 +2,16 @@ $(document).ready(function () {
     $('#loginForm').submit(function (event) {
         event.preventDefault();
 
-        const csrfToken = $('meta[name="_csrf"]').attr('content');
-        const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
-
         const user = {
             username: $('#loginUsername').val(),
             password: $('#loginPassword').val()
         };
-
-        console.log(user);
 
         $.ajax({
             url: '/auth/login',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(user),
-            headers: {
-                // [csrfHeader]: csrfToken
-            },
             success: function() {
                 alert('Login successful!');
                 window.location.href = '/';

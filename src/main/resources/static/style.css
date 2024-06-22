@@ -3,10 +3,7 @@ body {
     background-color: #f5f5f5;
     margin: 0;
     padding: 0;
-}
-
-.container {
-    max-width: 1300px;
+    height: 100vh;
 }
 
 #email, #password {
@@ -18,8 +15,65 @@ body {
     margin-left: .5rem;
 }
 
+#addTask {
+    margin-bottom: 1rem;
+}
+
+.actions-container {
+    margin-bottom: 1rem;
+}
+
+.categories-container {
+    display: flex;
+}
+
+.categories-container .select2-container {
+    flex-grow: 1;
+}
+
+#addCategoryBtn {
+    margin-left: 0.4rem;
+    border-color: var(--bs-border-color);
+}
+
+#addCategoryBtn:hover {
+    background-color: var(--bs-blue);
+    border-color: var(--bs-blue);
+}
+
+.select2-container--bootstrap-5 .select2-selection {
+    border-color: var(--bs-border-color) !important;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
 .select2-container--open {
     z-index: 9999 !important;
+}
+
+tr[data-id]>* {
+    padding: 0.7rem !important;
+}
+
+tr[data-id].due-in-one-day>* {
+    background-color: var(--bs-danger);
+    color: white;
+}
+
+tr[data-id].due-in-two-days>* {
+    background-color: var(--bs-orange);
+    color: white;
+}
+
+.error-content {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .table {
@@ -60,43 +114,28 @@ body {
     cursor: pointer;
 }
 
-.task-completed-checkbox {
-    transform: scale(1.3);
-}
-
-.description-column {
-    max-height: 50px;
-    overflow-y: auto;
-    padding-right: 2px;
-    text-overflow: ellipsis;
-}
-
-.controls-container {
+.action-buttons {
     display: flex;
+    gap: 0.5rem;
 }
 
-.control-btn {
-    border: none;
-    background-color: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-}
-
-.control-btn img {
-    width: 24px;
-}
-
-.control-btn img:hover {
-    opacity: 0.7;
-}
-
-.error {
-    color: red;
-    font-size: 0.875rem;
+#taskDeleteBtn {
     display: none;
+}
+
+.error, .login-register-error {
+    color: red;
+    font-size: 0.8rem;
+}
+
+
+#registerForm .form-outline, #loginForm .form-outline {
+    position: relative;
+}
+
+.login-register-error {
+    position: absolute;
+    top: -25px;
 }
 
 #characterCount {
@@ -129,4 +168,15 @@ body {
 
 ::-webkit-scrollbar-track:hover {
     background: #ddd;
+}
+
+
+.mb-4 {
+    margin-bottom: 1.7rem !important;
+}
+
+@media (min-width: 992px) {
+    .p-lg-5 {
+        padding: 2.5rem 3rem !important;
+    }
 }
