@@ -33,15 +33,14 @@
                             <h5 class="fw-normal mb-3 pb-3">Sign in to your account</h5>
 
                             <div class="form-outline mb-4">
-                                <span class="login-register-error" id="usernameError"></span>
+                                <span class="login-register-error" id="credentialsError"></span>
                                 <input type="text" class="form-control" id="loginUsername" name="username" required>
-                                <label class="form-label" for="loginUsername">Username</label>
+                                <label class="form-label ps-2 pt-1" for="loginUsername">Username</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <span class="login-register-error" id="passwordError"></span>
                                 <input type="password" class="form-control" id="loginPassword" name="password" required>
-                                <label class="form-label" for="loginPassword">Password</label>
+                                <label class="form-label ps-2 pt-1" for="loginPassword">Password</label>
                             </div>
 
                             <div th:if="${param.error}" class="p-3 text-primary-emphasis bg-danger-subtle rounded-3 mb-4">

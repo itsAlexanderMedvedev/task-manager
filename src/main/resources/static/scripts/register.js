@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#registerForm').on('submit', function(event) {
+    $('#registerForm').submit(function(event) {
         event.preventDefault();
 
         $('#usernameError').text('');
@@ -25,11 +25,9 @@ $(document).ready(function () {
                 if (xhr.responseJSON) {
                     const errors = xhr.responseJSON['errors'];
 
-                    for (const errNum in errors) {
-                        $('#' + errors[errNum]['field'] + 'Error').text(errors[errNum]['defaultMessage']);
+                    for (const field in errors) {
+                        $('#' + field + 'Error').text(errors[field]);
                     }
-                } else if (xhr.responseText === 'Username already exists') {
-                    $('#usernameError').text('Username already exists');
                 }
             }
         });

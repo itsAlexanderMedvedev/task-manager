@@ -2,6 +2,8 @@ $(document).ready(function () {
     $('#loginForm').submit(function (event) {
         event.preventDefault();
 
+        $('#credentialError').text('');
+
         const user = {
             username: $('#loginUsername').val(),
             password: $('#loginPassword').val()
@@ -17,18 +19,10 @@ $(document).ready(function () {
                 window.location.href = '/';
             },
             error: function(xhr) {
-                const errors = xhr.responseJSON;
-                if (errors) {
-                    if (errors.username) {
-                        $('#loginUsername').addClass('is-invalid');
-                        $('#usernameError').text(errors.username).show();
-                    }
-                    if (errors.password) {
-                        $('#loginPassword').addClass('is-invalid');
-                        $('#passwordError').text(errors.password).show();
-                    }
-                } else {
-                    alert('Login failed. Please try again.');
+                const errors = xhr.responseJSON['errors'];
+
+                for (const field in errors) {
+                    $('#' + field + 'Error').text(errors[field]);
                 }
             }
         });

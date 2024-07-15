@@ -3,6 +3,7 @@ package com.amedvedev.taskmanager.auth;
 import com.amedvedev.taskmanager.config.JwtService;
 import com.amedvedev.taskmanager.entitiy.Role;
 import com.amedvedev.taskmanager.entitiy.User;
+import com.amedvedev.taskmanager.exception.UsernameAlreadyExistsException;
 import com.amedvedev.taskmanager.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class AuthenticationService {
 
     public ResponseEntity<?> register(RegisterRequest request) {
         if (userRepository.findByUsernameIgnoreCase(request.getUsername()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+            throw new UsernameAlreadyExistsException("Username already exists");
         }
         User user = User.builder()
                 .username(request.getUsername())
@@ -42,16 +44,14 @@ public class AuthenticationService {
     }
 
     public ResponseEntity<?> login(LoginRequest request, HttpServletResponse response) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-        } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
+        // Throws BadCredentialsException or InternalAuthenticationServiceException if authentication fails
+        // (Handled by GlobalExceptionHandler)
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
 
         User user = userRepository.findByUsernameIgnoreCase(request.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         String token = jwtService.generateToken(user);
 
